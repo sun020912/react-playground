@@ -27,13 +27,13 @@ const filtersSlice = createSlice({
         let { color, changeType } = action.payload;
         switch (changeType) {
           case "added": {
-            if (!state.color.includes(color)) {
-              state.color.push(color);
+            if (!state.colors.includes(color)) {
+              state.colors.push(color);
             }
             break;
           }
           case "removed": {
-            state.color = state.color.filter(
+            state.colors = state.colors.filter(
               (existingColor) => existingColor !== color
             );
             break;

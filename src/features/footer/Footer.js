@@ -18,7 +18,7 @@ const Footer = () => {
   const handleTodosUpdate = async (thunkFn) => {
     setDisabled(true);
     try {
-      await dispatch(thunkFn(todoIds)).unwrap();
+      await dispatch(thunkFn({ ids: todoIds })).unwrap();
       dispatch(fetchTodos());
     } catch (error) {
       // TODO: app behaviour after failure

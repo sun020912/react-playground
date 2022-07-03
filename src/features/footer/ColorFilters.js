@@ -6,7 +6,7 @@ import { fetchTodos } from "../todos/todosSlice";
 const ColorFilters = () => {
   const [disabled, setDisabled] = useState(false);
   const colors = useSelector((state) => state.colors.data);
-  const filteredColors = useSelector((state) => state.filters.color);
+  const filteredColors = useSelector((state) => state.filters.colors);
   const dispatch = useDispatch();
 
   const renderedColors = colors.map((color) => {
@@ -20,6 +20,8 @@ const ColorFilters = () => {
       try {
         await dispatch(fetchTodos()).unwrap();
       } catch (error) {
+        // TODO: app behaviour on error
+        console.log("Fetch error");
         // dispatch(filterColors(e.target.name, !changeType));
       } finally {
       }

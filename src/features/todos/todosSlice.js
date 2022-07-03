@@ -21,7 +21,9 @@ export const fetchTodos = createAsyncThunk(
       res = await axios.get(url);
     } else {
       res = await axios.get(
-        `${apiServer}todos?${qs.stringify(getState().filters)}`
+        `${apiServer}todos?${qs.stringify(getState().filters, {
+          indices: false,
+        })}`
       );
     }
     return res.data;
@@ -48,7 +50,9 @@ export const updateTodo = createAsyncThunk(
       method: "put",
       headers: { "content-type": "application/x-www-form-urlencoded" },
       url: `${apiServer}todos/${id}`,
-      data: qs.stringify(payload),
+      data: qs.stringify(payload, {
+        indices: false,
+      }),
     });
     return response.data.data;
   }
@@ -58,7 +62,9 @@ export const markCompleted = createAsyncThunk(
   "todos/markCompleted",
   async (ids) => {
     const response = await axios.get(
-      `${apiServer}todos/mark-completed?${qs.stringify(ids)}`
+      `${apiServer}todos/mark-completed?${qs.stringify(ids, {
+        indices: false,
+      })}`
     );
     return response.data.data;
   }
@@ -68,7 +74,9 @@ export const clearCompleted = createAsyncThunk(
   "todos/clearCompleted",
   async (ids) => {
     const response = await axios.get(
-      `${apiServer}todos/clear-completed?${qs.stringify(ids)}`
+      `${apiServer}todos/clear-completed?${qs.stringify(ids, {
+        indices: false,
+      })}`
     );
     return response.data.data;
   }

@@ -4,8 +4,8 @@ export const apiServer =
 
 export const onStartQuery = {
   pageSize: "9",
-  color: [],
-  // color: ["green", "blue", "orange", "purple", "red"],
+  colors: [],
+  // colors: ["green", "blue", "orange", "purple", "red"],
   status: "all", // 'all' | 'active' | 'completed'
   sortBy: "dateDesc", // 'dateDesc' | 'dateAsc' | 'nameDesc' | 'nameAsc'
 };
