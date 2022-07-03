@@ -7,7 +7,7 @@ import { fetchTodos, markCompleted, clearCompleted } from "../todos/todosSlice";
 import axios from "axios";
 import qs from "qs";
 import { loremTodo } from "../../utils";
-import { apiServer } from "../../config";
+import { apiServer, onStartQuery } from "../../config";
 
 const Footer = () => {
   const todoIds = useSelector((state) => state.todos.ids);
@@ -32,11 +32,9 @@ const Footer = () => {
     setDisabled(true);
     try {
       const promises = [];
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < onStartQuery.pageSize; i++) {
         const newTodo = {
           text: loremTodo.generateWords(3),
-          // color: colors[Math.random() * colors.length].name.toLowerCase(),
-          // completed: (Math.random() * 10) % 2 === 0 ? "true" : "false",
         };
         const newTodoPost = async (newTodo) =>
           await axios.post(`${apiServer}todos`, newTodo);
@@ -73,7 +71,6 @@ const Footer = () => {
           });
         promises.push(newTodoPost(newTodo));
       }
-      console.log(promises);
       await Promise.all(promises);
       dispatch(fetchTodos());
     } catch (error) {

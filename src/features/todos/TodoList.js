@@ -8,22 +8,7 @@ const TodoList = () => {
   const dispatch = useDispatch();
 
   let links = [];
-  if (todos.meta) {
-    if (todos.meta.links.length > 7) {
-      const middle = [
-        {
-          label: "...",
-          active: true,
-        },
-      ];
-      links = todos.meta.links
-        .slice(1, 3)
-        .concat(middle)
-        .concat(todos.meta.links.slice(-3, -1));
-    } else {
-      links = todos.meta.links.slice(1, -1);
-    }
-  }
+  if (todos.meta?.links.length > 1) links = todos.meta.links.slice(1, -1);
 
   const Pagination = links.map(({ url, label, active }, index) => {
     const handleClick = () => {
@@ -67,7 +52,7 @@ const TodoList = () => {
             style={{
               display: "flex",
               justifyContent: "center",
-              marginBottom: "1rem",
+              margin: "0.75rem",
             }}
           >
             {Pagination}

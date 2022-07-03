@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { onStartQuery } from "../../config";
 
 export const StatusFilters = {
   All: "all",
@@ -6,14 +7,7 @@ export const StatusFilters = {
   Completed: "completed",
 };
 
-const initialState = {
-  pageSize: "5",
-  color: [],
-  // color: ["green", "blue", "orange", "purple", "red"],
-  // 'green' | 'blue' | 'orange' | 'purple' | 'red'
-  status: "all", // 'all' | 'active' | 'completed'
-  sortBy: "dateDesc", // 'dateDesc' | 'dateAsc' | 'nameDesc' | 'nameAsc'
-};
+const initialState = onStartQuery;
 
 const filtersSlice = createSlice({
   name: "filters",
