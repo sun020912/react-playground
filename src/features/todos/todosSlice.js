@@ -1,9 +1,9 @@
 import {
   createSlice,
-  createSelector,
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
+import qs from "qs";
 import axios from "axios";
 import { apiServer } from "../../config";
 
@@ -15,9 +15,16 @@ const initialState = todosAdapter.getInitialState({
 
 export const fetchTodos = createAsyncThunk(
   "todos/fetchTodos",
-  async (searchParams = "status=all&pageSize=5") => {
-    const response = await axios.get(`${apiServer}todos?${searchParams}`);
-    return response.data;
+  async (url, { getState, dispatch }) => {
+    let res;
+    if (url) {
+      res = await axios.get(url);
+    } else {
+      res = await axios.get(
+        `${apiServer}todos?${qs.stringify(getState().filters)}`
+      );
+    }
+    return res.data;
   }
 );
 
@@ -25,14 +32,57 @@ export const saveNewTodo = createAsyncThunk(
   "todos/saveNewTodo",
   async (text) => {
     const response = await axios.post(`${apiServer}todos`, { text });
-    return response.data;
+    return response.data.data;
+  }
+);
+
+export const deleteTodo = createAsyncThunk("todos/deleteTodo", async (id) => {
+  const response = await axios.delete(`${apiServer}todos/${id}`);
+  return response.data.data;
+});
+
+export const updateTodo = createAsyncThunk(
+  "todos/updateTodo",
+  async ({ id, payload }) => {
+    const response = await axios({
+      method: "put",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      url: `${apiServer}todos/${id}`,
+      data: qs.stringify(payload),
+    });
+    return response.data.data;
+  }
+);
+
+export const markCompleted = createAsyncThunk(
+  "todos/markCompleted",
+  async (ids) => {
+    const response = await axios.get(
+      `${apiServer}todos/mark-completed?${qs.stringify(ids)}`
+    );
+    return response.data.data;
+  }
+);
+
+export const clearCompleted = createAsyncThunk(
+  "todos/clearCompleted",
+  async (ids) => {
+    const response = await axios.get(
+      `${apiServer}todos/clear-completed?${qs.stringify(ids)}`
+    );
+    return response.data.data;
   }
 );
 
 const todosSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {},
+  reducers: {
+    optimisticUpdateTodo(state, action) {
+      // TODO: fulfill for optimistic update
+      state.todos.entities[action.id] = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTodos.pending, (state, action) => {
@@ -42,12 +92,13 @@ const todosSlice = createSlice({
         todosAdapter.setAll(state, action.payload.data);
         state.links = action.payload.links;
         state.meta = action.payload.meta;
-        state.status = "fulfilled";
+        state.status = "succeeded";
       })
       .addCase(fetchTodos.rejected, (state, action) => {
-        state.status = "rejected";
-      })
-      .addCase(saveNewTodo.fulfilled, todosAdapter.addOne);
+        state.status = "failed";
+      });
+    // NOTE: ignore because of reload todolist for pagination
+    // .addCase(saveNewTodo.fulfilled, todosAdapter.addOne);
   },
 });
 

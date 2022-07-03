@@ -213,7 +213,7 @@ main h2 {
   font-weight: 200;
   text-align: center;
   color: #b83f45;
-  margin-top: 0;
+  /* margin-top: 0; */
   -webkit-text-rendering: optimizeLegibility;
   -moz-text-rendering: optimizeLegibility;
   text-rendering: optimizeLegibility;

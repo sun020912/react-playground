@@ -1,16 +1,10 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { apiServer } from "../../config";
 
-const colorsAdapter = createEntityAdapter();
-
-const initialState = colorsAdapter.getInitialState({
+const initialState = {
   status: "idle",
-});
+};
 
 export const fetchColors = createAsyncThunk("colors/fetchColors", async () => {
   const response = await axios.get(`${apiServer}colors`);
@@ -26,7 +20,7 @@ const colorsSlice = createSlice({
       state.status = "pending";
     });
     builder.addCase(fetchColors.fulfilled, (state, action) => {
-      colorsAdapter.setAll(state, action.payload.data);
+      state.data = action.payload.data;
       state.status = "fulfilled";
     });
     builder.addCase(fetchColors.rejected, (state, action) => {
@@ -36,7 +30,3 @@ const colorsSlice = createSlice({
 });
 
 export default colorsSlice.reducer;
-
-export const { selectAll: selectColors } = colorsAdapter.getSelectors(
-  (state) => state.colors
-);

@@ -1,24 +1,38 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTodos, saveNewTodo } from "../todos/todosSlice";
+import { loremTodo } from "../../utils";
 
 const Header = () => {
-  // PLACE HOLDER
-  const saveNewTodo = () => {};
-  // PLACE HOLDER
-
   const [text, setText] = useState("");
   const [status, setStatus] = useState("idle");
   const dispatch = useDispatch();
+  const todoListStatus = useSelector((state) => state.todos.status);
+
+  const inputText = useRef();
+
+  useEffect(() => {
+    if (todoListStatus !== "loading") {
+      inputText.current.focus();
+    }
+  }, [inputText, todoListStatus]);
 
   const handleChange = (e) => setText(e.target.value);
 
   const handleKeyDown = async (e) => {
-    const trimmedText = text.trim();
-    if (e.which === 13 && trimmedText) {
+    if (e.which === 13) {
       setStatus("loading");
-      await dispatch(saveNewTodo(trimmedText));
-      setText("");
-      setStatus("idle");
+      try {
+        // await dispatch(saveNewTodo(text)).unwrap();
+        await dispatch(saveNewTodo(loremTodo.generateWords(3))).unwrap();
+        setText("");
+        dispatch(fetchTodos());
+      } catch (error) {
+        // TODO: app behaviour after failure
+        alert("Add error");
+      } finally {
+        setStatus("idle");
+      }
     }
   };
 
@@ -35,6 +49,7 @@ const Header = () => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={isLoading}
+        ref={inputText}
       />
       {loader}
     </header>

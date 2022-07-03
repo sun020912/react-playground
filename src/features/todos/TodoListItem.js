@@ -1,34 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as TimesSolid } from "./times-solid.svg";
-import { selectTodoById } from "./todosSlice";
-import { selectColors } from "../colors/colorsSlice";
+import {
+  updateTodo as updateTodoThunk,
+  deleteTodo,
+  selectTodoById,
+  fetchTodos,
+} from "./todosSlice";
 
 const TodoListItem = ({ id }) => {
-  // TODO: check why nested in useSelector
   const todo = useSelector((state) => selectTodoById(state, id));
   const { text, completed, color } = todo;
-
+  const colors = useSelector((state) => state.colors.data);
+  const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
 
-  const handleCompletedChanged = () => {
-    // TODO: change in both client state and request to server
+  const updateTodo = async (payload) => {
+    setDisabled(true);
+    try {
+      await dispatch(updateTodoThunk({ id, payload })).unwrap();
+      dispatch(fetchTodos());
+      // TODO: optimistic update
+    } catch (error) {
+      // TODO: app behaviour after failure
+      alert("Update error");
+    } finally {
+      setDisabled(false);
+    }
   };
 
-  const handleColorChanged = () => {
-    // TODO: change in both client state and request to server
+  const onDelete = async () => {
+    setDisabled(true);
+    try {
+      await dispatch(deleteTodo(id)).unwrap();
+      dispatch(fetchTodos());
+    } catch (error) {
+      // TODO: app behaviour after failure
+      alert("Update error");
+    } finally {
+      setDisabled(false);
+    }
   };
-
-  const onDelete = () => {
-    // TODO: change in both client state and request to server
-  };
-
-  // BUG#1: convert object to array id and name
-  const colorOptions = useSelector(selectColors).map((c) => (
-    <option key={c} value={c}>
-      {c}
-    </option>
-  ));
 
   return (
     <li>
@@ -38,20 +50,35 @@ const TodoListItem = ({ id }) => {
             className="toggle"
             type="checkbox"
             checked={completed}
-            onChange={handleCompletedChanged}
+            onChange={(e) =>
+              updateTodo({
+                completed: e.target.checked,
+              })
+            }
+            disabled={disabled}
           />
           <div className="todo-text">{text}</div>
         </div>
         <div className="segment buttons">
           <select
             className="colorPicker"
-            value={color}
-            style={{ color }}
-            onChange={handleColorChanged}
+            defaultValue={color?.name.toLowerCase()}
+            style={{ color: color?.name.toLowerCase() }}
+            onChange={(e) =>
+              updateTodo({
+                color: e.target.value,
+              })
+            }
+            disabled={disabled}
           >
-            {colorOptions}
+            <option></option>
+            {colors.map(({ id, name }) => (
+              <option key={name.toLowerCase()} value={name.toLowerCase()}>
+                {name}
+              </option>
+            ))}
           </select>
-          <button className="destroy" onClick={onDelete}>
+          <button className="destroy" onClick={onDelete} disabled={disabled}>
             <TimesSolid />
           </button>
         </div>

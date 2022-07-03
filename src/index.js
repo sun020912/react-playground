@@ -5,21 +5,34 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "./store";
 import { fetchColors } from "./features/colors/colorsSlice";
-import { fetchTodos, todosAdapter } from "./features/todos/todosSlice";
+import { fetchTodos } from "./features/todos/todosSlice";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-store.dispatch(fetchTodos());
-store.dispatch(fetchColors());
+const start = async () => {
+  root.render(<h3 style={{ textAlign: "center" }}>Initializing...</h3>);
+  try {
+    await store.dispatch(fetchColors());
+    await store.dispatch(fetchTodos());
+    root.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    );
+  } catch (error) {
+    root.render(
+      <>
+        <h3 style={{ textAlign: "center" }}>Error</h3>
+        <button onClick={() => store.dispatch(fetchColors())}>Try again</button>
+      </>
+    );
+  }
+};
 
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
-);
+start();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
