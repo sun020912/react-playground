@@ -459,7 +459,7 @@ ul.todo-list {
   text-align: center;
   font-size: 15px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   border-top: 1px solid #e6e6e6;
 }
 

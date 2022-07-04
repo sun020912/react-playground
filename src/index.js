@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { fetchColors } from "./features/colors/colorsSlice";
 import { fetchTodos } from "./features/todos/todosSlice";
+import { BrowserRouter } from "react-router-dom";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -17,16 +18,18 @@ const start = async () => {
     await store.dispatch(fetchTodos()).unwrap();
     root.render(
       <React.StrictMode>
-        <Provider store={store}>
-          <App />
-        </Provider>
+        <BrowserRouter>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </BrowserRouter>
       </React.StrictMode>
     );
   } catch (error) {
     root.render(
       <>
         <h3 style={{ textAlign: "center" }}>Error</h3>
-        <button onClick={() => store.dispatch(fetchColors())}>Try again</button>
+        <button onClick={start}>Try again</button>
       </>
     );
   }

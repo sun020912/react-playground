@@ -3,17 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import RemainingTodos from "./RemainingTodos";
 import ColorFilters from "./ColorFilters";
 import StatusFilter from "./StatusFilter";
+import TotalColor from "../colors/TotalColors";
 import { fetchTodos, markCompleted, clearCompleted } from "../todos/todosSlice";
 import axios from "axios";
 import qs from "qs";
 import { loremTodo } from "../../utils";
 import { apiServer, onStartQuery } from "../../config";
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
+  const location = useLocation();
   const todoIds = useSelector((state) => state.todos.ids);
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
-  const avalableColors = useSelector((state) => state.colors.data);
+  const colors = useSelector((state) => state.colors.data);
 
   const handleTodosUpdate = async (thunkFn) => {
     setDisabled(true);
@@ -57,8 +60,8 @@ const Footer = () => {
       for (let i = 0; i < todoIds.length; i++) {
         const newTodo = {
           color:
-            avalableColors[
-              Math.floor(Math.random() * avalableColors.length)
+            colors[
+              Math.floor(Math.random() * colors.length)
             ].name.toLowerCase(),
           completed: Math.random() < 0.5,
         };
@@ -81,44 +84,58 @@ const Footer = () => {
     }
   };
 
-  return (
-    <footer className="footer">
-      <div className="actions">
-        <h5>Actions</h5>
-        <button
-          className="button"
-          onClick={() => handleTodosUpdate(markCompleted)}
-          disabled={disabled}
-        >
-          Mark All Completed
-        </button>
-        <button
-          className="button"
-          onClick={() => handleTodosUpdate(clearCompleted)}
-          disabled={disabled}
-        >
-          Clear Completed
-        </button>
-        <button
-          className="button"
-          onClick={handleAddRandom}
-          disabled={disabled}
-        >
-          Add random
-        </button>
-        <button
-          className="button"
-          onClick={handleUpdateRandom}
-          disabled={disabled}
-        >
-          Update random
-        </button>
-      </div>
-      <RemainingTodos />
-      <StatusFilter />
-      <ColorFilters />
-    </footer>
-  );
+  let content;
+  switch (location.pathname) {
+    case "/colors":
+      content = (
+        <>
+          <TotalColor />
+        </>
+      );
+      break;
+    default:
+      content = (
+        <>
+          <div className="actions">
+            <h5>Actions</h5>
+            <button
+              className="button"
+              onClick={() => handleTodosUpdate(markCompleted)}
+              disabled={disabled}
+            >
+              Mark All Completed
+            </button>
+            <button
+              className="button"
+              onClick={() => handleTodosUpdate(clearCompleted)}
+              disabled={disabled}
+            >
+              Clear Completed
+            </button>
+            <button
+              className="button"
+              onClick={handleAddRandom}
+              disabled={disabled}
+            >
+              Add random
+            </button>
+            <button
+              className="button"
+              onClick={handleUpdateRandom}
+              disabled={disabled}
+            >
+              Update random
+            </button>
+          </div>
+          <RemainingTodos />
+          <StatusFilter />
+          <ColorFilters />
+        </>
+      );
+      break;
+  }
+
+  return <footer className="footer">{content}</footer>;
 };
 
 export default Footer;

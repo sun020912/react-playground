@@ -1,6 +1,5 @@
 export const apiServer =
   "https://todo-api-takeuchi-training.herokuapp.com/api/";
-// export const apiServer = "http://localhost:8000/api/";
 
 export const onStartQuery = {
   pageSize: 5,
@@ -9,3 +8,23 @@ export const onStartQuery = {
   status: "all", // 'all' | 'active' | 'completed'
   sortBy: "dateDesc", // 'dateDesc' | 'dateAsc' | 'nameDesc' | 'nameAsc'
 };
+
+export const basicColors = [
+  "Black",
+  "Silver",
+  "Gray",
+  // "White",
+  "Silver",
+  "Maroon",
+  "Red",
+  "Purple",
+  "Fuchsia",
+  "Green",
+  "Lime",
+  "Olive",
+  "Yellow",
+  "Navy",
+  "Blue",
+  "Teal",
+  "Aqua",
+];

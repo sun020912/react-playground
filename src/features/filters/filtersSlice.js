@@ -7,11 +7,9 @@ export const StatusFilters = {
   Completed: "completed",
 };
 
-const initialState = onStartQuery;
-
 const filtersSlice = createSlice({
   name: "filters",
-  initialState,
+  initialState: onStartQuery,
   reducers: {
     filterPageSize(state, action) {
       state.pageSize = action.payload;

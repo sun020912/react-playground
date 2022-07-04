@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { extractPageNum } from "../../utils";
 import TodoListItem from "./TodoListItem";
-import todosSlice, { fetchTodos } from "./todosSlice";
+import { fetchTodos } from "./todosSlice";
 
 const TodoList = () => {
   const todos = useSelector((state) => state.todos);

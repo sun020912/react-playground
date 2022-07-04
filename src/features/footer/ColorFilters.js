@@ -21,8 +21,8 @@ const ColorFilters = () => {
         await dispatch(fetchTodos()).unwrap();
       } catch (error) {
         // TODO: app behaviour on error
-        console.log("Fetch error");
-        // dispatch(filterColors(e.target.name, !changeType));
+        dispatch(filterColors(e.target.name, !changeType));
+        alert("Fetch error");
       } finally {
       }
       setDisabled(false);

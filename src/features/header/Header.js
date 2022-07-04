@@ -1,35 +1,74 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodos, saveNewTodo } from "../todos/todosSlice";
+import { fetchColors, saveNewColor } from "../colors/colorsSlice";
 import { loremTodo } from "../../utils";
+import { useLocation } from "react-router-dom";
+import { basicColors } from "../../config";
 
 const Header = () => {
-  const [text, setText] = useState("");
+  const location = useLocation();
+  const [inputText, setInputText] = useState("");
+  const inputTextRef = useRef();
+  const [placeholder, setPlaceholder] = useState("");
   const [status, setStatus] = useState("idle");
   const dispatch = useDispatch();
-  const todoListStatus = useSelector((state) => state.todos.status);
 
-  const inputText = useRef();
+  const listStatus = useSelector((state) => {
+    switch (location.pathname) {
+      case "/colors":
+        return state.colors.status;
+      default:
+        return state.todos.status;
+    }
+  });
 
   useEffect(() => {
-    if (todoListStatus !== "loading") {
-      inputText.current.focus();
+    switch (location.pathname) {
+      case "/colors":
+        setPlaceholder("Which color to add?");
+        break;
+      default:
+        setPlaceholder("What needs to be done?");
+        break;
     }
-  }, [inputText, todoListStatus]);
+  }, [location]);
 
-  const handleChange = (e) => setText(e.target.value);
+  useEffect(() => {
+    if (listStatus !== "loading") {
+      inputTextRef.current.focus();
+    }
+  }, [inputTextRef, listStatus]);
+
+  const handleChange = (e) => setInputText(e.target.value);
 
   const handleKeyDown = async (e) => {
     if (e.which === 13) {
       setStatus("loading");
       try {
-        if (text.trim()) {
-          await dispatch(saveNewTodo(text)).unwrap();
-        } else {
-          await dispatch(saveNewTodo(loremTodo.generateWords(3))).unwrap();
+        switch (location.pathname) {
+          case "/colors":
+            if (inputText.trim()) {
+              await dispatch(saveNewColor(inputText)).unwrap();
+            } else {
+              await dispatch(
+                saveNewColor(
+                  basicColors[Math.floor(Math.random() * basicColors.length)]
+                )
+              ).unwrap();
+            }
+            dispatch(fetchColors());
+            break;
+          default:
+            if (inputText.trim()) {
+              await dispatch(saveNewTodo(inputText)).unwrap();
+            } else {
+              await dispatch(saveNewTodo(loremTodo.generateWords())).unwrap();
+            }
+            dispatch(fetchTodos());
+            break;
         }
-        setText("");
-        dispatch(fetchTodos());
+        setInputText("");
       } catch (error) {
         // TODO: app behaviour after failure
         alert("Add error");
@@ -40,7 +79,6 @@ const Header = () => {
   };
 
   let isLoading = status === "loading";
-  let placeholder = isLoading ? "" : "What needs to be done?";
   let loader = isLoading ? <div className="loader" /> : null;
 
   return (
@@ -48,11 +86,11 @@ const Header = () => {
       <input
         className="new-todo"
         placeholder={placeholder}
-        value={text}
+        value={inputText}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={isLoading}
-        ref={inputText}
+        ref={inputTextRef}
       />
       {loader}
     </header>

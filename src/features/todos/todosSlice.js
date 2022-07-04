@@ -15,7 +15,7 @@ const initialState = todosAdapter.getInitialState({
 
 export const fetchTodos = createAsyncThunk(
   "todos/fetchTodos",
-  async (page = 1, { getState, dispatch }) => {
+  async (page = "", { getState, dispatch }) => {
     const res = await axios.get(
       `${apiServer}todos?${qs.stringify(getState().filters, {
         arrayFormat: "comma",

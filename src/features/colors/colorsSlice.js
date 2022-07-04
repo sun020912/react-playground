@@ -11,20 +11,36 @@ export const fetchColors = createAsyncThunk("colors/fetchColors", async () => {
   return response.data;
 });
 
+export const saveNewColor = createAsyncThunk(
+  "colors/saveNewColor",
+  async (name) => {
+    const response = await axios.post(`${apiServer}colors`, { name });
+    return response.data;
+  }
+);
+
+export const deleteColor = createAsyncThunk(
+  "colors/deleteColor",
+  async (id) => {
+    const response = await axios.delete(`${apiServer}colors/${id}`);
+    return response.data;
+  }
+);
+
 const colorsSlice = createSlice({
   name: "colors",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchColors.pending, (state, action) => {
-      state.status = "pending";
+      state.status = "loading";
     });
     builder.addCase(fetchColors.fulfilled, (state, action) => {
       state.data = action.payload.data;
-      state.status = "fulfilled";
+      state.status = "succeeded";
     });
     builder.addCase(fetchColors.rejected, (state, action) => {
-      state.status = "rejected";
+      state.status = "failed";
     });
   },
 });
