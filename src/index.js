@@ -13,8 +13,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const start = async () => {
   root.render(<h3 style={{ textAlign: "center" }}>Initializing...</h3>);
   try {
-    await store.dispatch(fetchColors());
-    await store.dispatch(fetchTodos());
+    await store.dispatch(fetchColors()).unwrap();
+    await store.dispatch(fetchTodos()).unwrap();
     root.render(
       <React.StrictMode>
         <Provider store={store}>

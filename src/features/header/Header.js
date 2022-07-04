@@ -23,8 +23,11 @@ const Header = () => {
     if (e.which === 13) {
       setStatus("loading");
       try {
-        // await dispatch(saveNewTodo(text)).unwrap();
-        await dispatch(saveNewTodo(loremTodo.generateWords(3))).unwrap();
+        if (text.trim()) {
+          await dispatch(saveNewTodo(text)).unwrap();
+        } else {
+          await dispatch(saveNewTodo(loremTodo.generateWords(3))).unwrap();
+        }
         setText("");
         dispatch(fetchTodos());
       } catch (error) {

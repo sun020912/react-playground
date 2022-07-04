@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { extractPageNum } from "../../utils";
 import TodoListItem from "./TodoListItem";
 import todosSlice, { fetchTodos } from "./todosSlice";
 
@@ -11,9 +12,12 @@ const TodoList = () => {
   if (todos.meta?.links.length > 1) links = todos.meta.links.slice(1, -1);
 
   const Pagination = links.map(({ url, label, active }, index) => {
-    // const pageNumber = url.match(/&page=(\d*)/)[1];
     const handleClick = () => {
-      dispatch(fetchTodos(index + 1));
+      let pageNumber;
+      if (url) {
+        pageNumber = extractPageNum(url);
+        dispatch(fetchTodos(pageNumber));
+      }
     };
     return (
       <button
