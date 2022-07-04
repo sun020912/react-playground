@@ -3,7 +3,7 @@ export const apiServer =
 // export const apiServer = "http://localhost:8000/api/";
 
 export const onStartQuery = {
-  pageSize: "9",
+  pageSize: 5,
   colors: [],
   // colors: ["green", "blue", "orange", "purple", "red"],
   status: "all", // 'all' | 'active' | 'completed'

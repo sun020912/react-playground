@@ -11,8 +11,9 @@ const TodoList = () => {
   if (todos.meta?.links.length > 1) links = todos.meta.links.slice(1, -1);
 
   const Pagination = links.map(({ url, label, active }, index) => {
+    // const pageNumber = url.match(/&page=(\d*)/)[1];
     const handleClick = () => {
-      dispatch(fetchTodos(url));
+      dispatch(fetchTodos(index + 1));
     };
     return (
       <button

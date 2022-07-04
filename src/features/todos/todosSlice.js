@@ -15,17 +15,12 @@ const initialState = todosAdapter.getInitialState({
 
 export const fetchTodos = createAsyncThunk(
   "todos/fetchTodos",
-  async (url, { getState, dispatch }) => {
-    let res;
-    if (url) {
-      res = await axios.get(url);
-    } else {
-      res = await axios.get(
-        `${apiServer}todos?${qs.stringify(getState().filters, {
-          indices: false,
-        })}`
-      );
-    }
+  async (page = 1, { getState, dispatch }) => {
+    const res = await axios.get(
+      `${apiServer}todos?${qs.stringify(getState().filters, {
+        arrayFormat: "comma",
+      })}&page=${page}`
+    );
     return res.data;
   }
 );
@@ -51,7 +46,7 @@ export const updateTodo = createAsyncThunk(
       headers: { "content-type": "application/x-www-form-urlencoded" },
       url: `${apiServer}todos/${id}`,
       data: qs.stringify(payload, {
-        indices: false,
+        arrayFormat: "comma",
       }),
     });
     return response.data.data;
@@ -63,7 +58,7 @@ export const markCompleted = createAsyncThunk(
   async (ids) => {
     const response = await axios.get(
       `${apiServer}todos/mark-completed?${qs.stringify(ids, {
-        indices: false,
+        arrayFormat: "comma",
       })}`
     );
     return response.data.data;
@@ -75,7 +70,7 @@ export const clearCompleted = createAsyncThunk(
   async (ids) => {
     const response = await axios.get(
       `${apiServer}todos/clear-completed?${qs.stringify(ids, {
-        indices: false,
+        arrayFormat: "comma",
       })}`
     );
     return response.data.data;
