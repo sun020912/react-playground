@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, NavLink, Outlet } from "react-router-dom";
+import { Routes, Route, NavLink, Outlet, Navigate } from "react-router-dom";
 import ColorList from "./features/colors/ColorList";
 import Footer from "./features/footer/Footer";
 import Header from "./features/header/Header";
@@ -60,7 +60,8 @@ const App = () => {
           </div>
         }
       >
-        <Route index element={<TodoList />} />
+        <Route path="" element={<Navigate to="todos" replace />} />
+        {/* <Route index element={<TodoList />} /> */}
         <Route path="todos" element={<TodoList />} />
         <Route path="colors" element={<ColorList />} />
       </Route>

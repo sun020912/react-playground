@@ -10,7 +10,6 @@ const Header = () => {
   const location = useLocation();
   const [inputText, setInputText] = useState("");
   const inputTextRef = useRef();
-  const [placeholder, setPlaceholder] = useState("");
   const [status, setStatus] = useState("idle");
   const dispatch = useDispatch();
 
@@ -24,21 +23,18 @@ const Header = () => {
   });
 
   useEffect(() => {
-    switch (location.pathname) {
-      case "/colors":
-        setPlaceholder("Which color to add?");
-        break;
-      default:
-        setPlaceholder("What needs to be done?");
-        break;
-    }
-  }, [location]);
-
-  useEffect(() => {
     if (listStatus !== "loading") {
       inputTextRef.current.focus();
     }
-  }, [inputTextRef, listStatus]);
+    switch (location.pathname) {
+      case "/colors":
+        inputTextRef.current.placeholder = "Which color to add?";
+        break;
+      default:
+        inputTextRef.current.placeholder = "What needs to be done?";
+        break;
+    }
+  }, [listStatus, location]);
 
   const handleChange = (e) => setInputText(e.target.value);
 
@@ -85,7 +81,7 @@ const Header = () => {
     <header className="header">
       <input
         className="new-todo"
-        placeholder={placeholder}
+        placeholder=""
         value={inputText}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
