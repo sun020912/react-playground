@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterColors } from "../filters/filtersSlice";
 import { fetchTodos } from "../todos/todosSlice";
+import { useSearchParams } from "react-router-dom";
+import qs from "qs";
 
 const ColorFilters = () => {
   const [disabled, setDisabled] = useState(false);
   const colors = useSelector((state) => state.colors.data);
-  const filteredColors = useSelector((state) => state.filters.colors);
+  const currentFilters = useSelector((state) => state.filters);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams(
+      `${qs.stringify(currentFilters, {
+        arrayFormat: "comma",
+      })}&page=1`
+    );
+  }, [currentFilters.colors]);
 
   const renderedColors = colors.map((color) => {
     const name = color.name.toLowerCase();
-    const checked = filteredColors.includes(name);
+    const checked = currentFilters.colors.includes(name);
 
     const handleChange = async (e) => {
       setDisabled(true);

@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodos } from "../todos/todosSlice";
 import { filterStatus, StatusFilters } from "../filters/filtersSlice";
+import { useSearchParams } from "react-router-dom";
+import qs from "qs";
 
 const StatusFilter = () => {
   const currentFilters = useSelector((state) => state.filters);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams(
+      `${qs.stringify(currentFilters, {
+        arrayFormat: "comma",
+      })}&page=1`
+    );
+  }, [currentFilters.status]);
 
   const onSelectStatus = async (value) => {
     dispatch(filterStatus(value));

@@ -7,6 +7,13 @@ import store from "./store";
 import { fetchColors } from "./features/colors/colorsSlice";
 import { fetchTodos } from "./features/todos/todosSlice";
 import { BrowserRouter } from "react-router-dom";
+import qs from "qs";
+import {
+  filterPageSize,
+  filterStatus,
+  filterSortBy,
+  filterColors,
+} from "./features/filters/filtersSlice";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -15,7 +22,28 @@ const start = async () => {
   root.render(<h3 style={{ textAlign: "center" }}>Initializing...</h3>);
   try {
     await store.dispatch(fetchColors()).unwrap();
-    await store.dispatch(fetchTodos()).unwrap();
+
+    // TODO: add case if wrong params, no todo found inside app
+
+    const queryString = window.location.search;
+    const queryObject = qs.parse(queryString, {
+      ignoreQueryPrefix: true,
+    });
+
+    if (queryObject.pageSize)
+      store.dispatch(filterPageSize(queryObject.pageSize));
+    if (queryObject.status) store.dispatch(filterStatus(queryObject.status));
+    if (queryObject.softBy) store.dispatch(filterSortBy(queryObject.softBy));
+    if (queryObject.colors) {
+      const colors = queryObject.colors.split(",");
+      colors.forEach((color) => {
+        store.dispatch(filterColors(color, "added"));
+      });
+    }
+
+    await store.dispatch(fetchTodos(queryString)).unwrap();
+
+    // TODO: dispatch state status
     root.render(
       <React.StrictMode>
         <BrowserRouter>
@@ -26,6 +54,7 @@ const start = async () => {
       </React.StrictMode>
     );
   } catch (error) {
+    console.log(error);
     root.render(
       <>
         <h3 style={{ textAlign: "center" }}>Error</h3>

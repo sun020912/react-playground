@@ -1,40 +1,21 @@
-import React from "react";
+import Pagination from "./Pagination";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { extractPageNum } from "../../utils";
 import TodoListItem from "./TodoListItem";
+import { useLocation } from "react-router-dom";
 import { fetchTodos } from "./todosSlice";
 
 const TodoList = () => {
   const todos = useSelector((state) => state.todos);
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  let links = [];
-  if (todos.meta?.links.length > 1) links = todos.meta.links.slice(1, -1);
+  useEffect(() => {
+    dispatch(fetchTodos(location.search));
+  }, [location]);
 
-  const Pagination = links.map(({ url, label, active }, index) => {
-    const handleClick = () => {
-      let pageNumber;
-      if (url) {
-        pageNumber = extractPageNum(url);
-        dispatch(fetchTodos(pageNumber));
-      }
-    };
-    return (
-      <button
-        key={index}
-        onClick={handleClick}
-        disabled={active}
-        style={{
-          fontSize: "1.25rem",
-          fontWeight: "bold",
-          marginLeft: "0.5rem",
-          marginRight: "0.5rem",
-        }}
-      >
-        {label}
-      </button>
-    );
-  });
+  let links;
+  if (todos.meta?.links.length > 1) links = todos.meta.links.slice(1, -1);
 
   switch (todos.status) {
     case "loading":
@@ -60,7 +41,7 @@ const TodoList = () => {
               margin: "0.75rem",
             }}
           >
-            {Pagination}
+            {links && <Pagination links={links} />}
           </div>
         </>
       );
