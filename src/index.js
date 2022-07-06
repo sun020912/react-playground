@@ -21,29 +21,27 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const start = async () => {
   root.render(<h3 style={{ textAlign: "center" }}>Initializing...</h3>);
   try {
+    const hrefSearchParams = new URL(document.location).searchParams;
+
     await store.dispatch(fetchColors()).unwrap();
+    await store.dispatch(fetchTodos(hrefSearchParams.toString()));
 
-    // TODO: add case if wrong params, no todo found inside app
-
-    const queryString = window.location.search;
-    const queryObject = qs.parse(queryString, {
-      ignoreQueryPrefix: true,
-    });
-
-    if (queryObject.pageSize)
-      store.dispatch(filterPageSize(queryObject.pageSize));
-    if (queryObject.status) store.dispatch(filterStatus(queryObject.status));
-    if (queryObject.softBy) store.dispatch(filterSortBy(queryObject.softBy));
-    if (queryObject.colors) {
-      const colors = queryObject.colors.split(",");
-      colors.forEach((color) => {
-        store.dispatch(filterColors(color, "added"));
-      });
+    if (store.getState().todos.status === "succeeded") {
+      hrefSearchParams.has("pageSize") &&
+        store.dispatch(filterPageSize(hrefSearchParams.get("pageSize")));
+      hrefSearchParams.has("status") &&
+        store.dispatch(filterStatus(hrefSearchParams.get("status")));
+      hrefSearchParams.has("softBy") &&
+        store.dispatch(filterSortBy(hrefSearchParams.get("softBy")));
+      if (hrefSearchParams.has("colors")) {
+        const colors = hrefSearchParams.get("colors")?.split(",");
+        if (colors?.length > 0)
+          colors.forEach((color) => {
+            store.dispatch(filterColors(color, "added"));
+          });
+      }
     }
 
-    await store.dispatch(fetchTodos(queryString)).unwrap();
-
-    // TODO: dispatch state status
     root.render(
       <React.StrictMode>
         <BrowserRouter>
@@ -56,10 +54,10 @@ const start = async () => {
   } catch (error) {
     console.log(error);
     root.render(
-      <>
-        <h3 style={{ textAlign: "center" }}>Error</h3>
+      <div style={{ alignItems: "center" }}>
+        <h3>Error</h3>
         <button onClick={start}>Try again</button>
-      </>
+      </div>
     );
   }
 };

@@ -1,6 +1,4 @@
 import { LoremIpsum } from "lorem-ipsum";
-import store from "./store";
-import { basicColors } from "./config";
 
 export const loremTodo = new LoremIpsum({
   wordsPerSentence: {
@@ -8,5 +6,3 @@ export const loremTodo = new LoremIpsum({
     min: 2,
   },
 });
-
-export const extractPageNum = (url) => url.split(`?page=`)[1];

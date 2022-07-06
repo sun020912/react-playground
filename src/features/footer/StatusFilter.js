@@ -6,17 +6,16 @@ import { useSearchParams } from "react-router-dom";
 import qs from "qs";
 
 const StatusFilter = () => {
-  const currentFilters = useSelector((state) => state.filters);
+  const currentStatus = useSelector((state) => state.filters.status);
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    setSearchParams(
-      `${qs.stringify(currentFilters, {
-        arrayFormat: "comma",
-      })}&page=1`
-    );
-  }, [currentFilters.status]);
+    const hrefSearchParams = new URL(document.location).searchParams;
+    hrefSearchParams.set("page", 1);
+    hrefSearchParams.set("status", currentStatus);
+    setSearchParams(hrefSearchParams.toString());
+  }, [currentStatus]);
 
   const onSelectStatus = async (value) => {
     dispatch(filterStatus(value));
@@ -26,7 +25,7 @@ const StatusFilter = () => {
   const renderedFilters = Object.keys(StatusFilters).map((key) => {
     const value = StatusFilters[key];
     const handleClick = () => onSelectStatus(value);
-    const className = value === currentFilters.status ? "selected" : "";
+    const className = value === currentStatus ? "selected" : "";
 
     return (
       <li key={value}>

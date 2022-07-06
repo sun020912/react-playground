@@ -3,26 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterColors } from "../filters/filtersSlice";
 import { fetchTodos } from "../todos/todosSlice";
 import { useSearchParams } from "react-router-dom";
-import qs from "qs";
 
 const ColorFilters = () => {
   const [disabled, setDisabled] = useState(false);
   const colors = useSelector((state) => state.colors.data);
-  const currentFilters = useSelector((state) => state.filters);
+  const currentColors = useSelector((state) => state.filters.colors);
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    setSearchParams(
-      `${qs.stringify(currentFilters, {
-        arrayFormat: "comma",
-      })}&page=1`
-    );
-  }, [currentFilters.colors]);
+    const hrefSearchParams = new URL(document.location).searchParams;
+    hrefSearchParams.set("page", 1);
+    hrefSearchParams.set("colors", currentColors.toString());
+    setSearchParams(hrefSearchParams.toString());
+  }, [currentColors]);
 
   const renderedColors = colors.map((color) => {
     const name = color.name.toLowerCase();
-    const checked = currentFilters.colors.includes(name);
+    const checked = currentColors.includes(name);
 
     const handleChange = async (e) => {
       setDisabled(true);
