@@ -7,6 +7,11 @@ import {
   selectTodoById,
   fetchTodos,
 } from "./todosSlice";
+import EditIcon from "@mui/icons-material/Edit";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const TodoListItem = ({ id }) => {
   const todo = useSelector((state) => selectTodoById(state, id));
@@ -14,6 +19,7 @@ const TodoListItem = ({ id }) => {
   const colors = useSelector((state) => state.colors.data);
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const updateTodo = async (payload) => {
     setDisabled(true);
@@ -81,6 +87,10 @@ const TodoListItem = ({ id }) => {
           <button className="destroy" onClick={onDelete} disabled={disabled}>
             <TimesSolid />
           </button>
+          <Button
+            startIcon={<VisibilityIcon />}
+            onClick={() => navigate(`view/${id}`)}
+          ></Button>
         </div>
       </div>
     </li>

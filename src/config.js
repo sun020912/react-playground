@@ -1,3 +1,5 @@
+import { createTheme } from "@mui/material";
+
 export const apiServer =
   "https://todo-api-takeuchi-training.herokuapp.com/api/";
 
@@ -28,3 +30,5 @@ export const basicColors = [
   "Teal",
   "Aqua",
 ];
+
+const theme = createTheme();

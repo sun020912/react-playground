@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import qs from "qs";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const PaginationButton = ({ url, label, active, key }) => {
   const filters = useSelector((state) => state.filters);
@@ -13,13 +13,11 @@ const PaginationButton = ({ url, label, active, key }) => {
     })}&page=${hrefSearchParams.get("page")}`;
   }
   return (
-    <button
-      key={key}
-      disabled={active}
-      className={active ? "selected" : undefined}
-    >
-      <Link
-        to={clientUrl}
+    <Link to={clientUrl}>
+      <button
+        key={key}
+        disabled={active}
+        className={active ? "selected" : undefined}
         style={{
           textDecoration: "none",
           fontSize: "1.25rem",
@@ -30,8 +28,8 @@ const PaginationButton = ({ url, label, active, key }) => {
         }}
       >
         {label}
-      </Link>
-    </button>
+      </button>
+    </Link>
   );
 };
 

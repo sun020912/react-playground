@@ -3,7 +3,9 @@ import { Routes, Route, NavLink, Outlet, Navigate } from "react-router-dom";
 import ColorList from "./features/colors/ColorList";
 import Footer from "./features/footer/Footer";
 import Header from "./features/header/Header";
+import EditTodoForm from "./features/todos/EditTodoForm";
 import TodoList from "./features/todos/TodoList";
+import ViewTodo from "./features/todos/ViewTodo";
 
 const App = () => {
   return (
@@ -61,8 +63,11 @@ const App = () => {
         }
       >
         <Route path="" element={<Navigate to="todos" replace />} />
-        {/* <Route index element={<TodoList />} /> */}
-        <Route path="todos" element={<TodoList />} />
+        <Route path="todos">
+          <Route index element={<TodoList />}></Route>
+          <Route path="view/:id" element={<ViewTodo />} />
+          <Route path="edit/:id" element={<EditTodoForm />} />
+        </Route>
         <Route path="colors" element={<ColorList />} />
       </Route>
     </Routes>
