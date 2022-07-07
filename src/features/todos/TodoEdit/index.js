@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodos, selectTodoById } from "./todosSlice";
-import { updateTodo } from "./todosSlice";
+import { fetchTodos, selectTodoById } from "../todosSlice";
+import { updateTodo } from "../todosSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,7 +16,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-const EditTodoForm = () => {
+const TodoEdit = () => {
   const { id } = useParams();
   const todo = useSelector((state) => selectTodoById(state, id));
   const colors = useSelector((state) => state.colors);
@@ -126,4 +126,4 @@ const EditTodoForm = () => {
   );
 };
 
-export default EditTodoForm;
+export default TodoEdit;

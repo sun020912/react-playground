@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import qs from "qs";
 import axios from "axios";
-import { apiServer } from "../../config";
+import { apiServer } from "../../app/config";
 
 export const todosAdapter = createEntityAdapter();
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectTodoById } from "./todosSlice";
+import { selectTodoById } from "../todosSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -12,7 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WorkIcon from "@mui/icons-material/Work";
 
-const ViewTodo = () => {
+const TodoView = () => {
   const { id } = useParams();
   const todo = useSelector((state) => selectTodoById(state, id));
   const navigate = useNavigate();
@@ -63,4 +63,4 @@ const ViewTodo = () => {
   );
 };
 
-export default ViewTodo;
+export default TodoView;

@@ -3,11 +3,10 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./app/store";
 import { fetchColors } from "./features/colors/colorsSlice";
 import { fetchTodos } from "./features/todos/todosSlice";
 import { BrowserRouter } from "react-router-dom";
-import qs from "qs";
 import {
   filterPageSize,
   filterStatus,

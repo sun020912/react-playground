@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterColors } from "../filters/filtersSlice";
-import { fetchTodos } from "../todos/todosSlice";
+import { filterColors } from "../../../filters/filtersSlice";
+import { fetchTodos } from "../../todosSlice";
 import { useSearchParams } from "react-router-dom";
 
 const ColorFilters = () => {

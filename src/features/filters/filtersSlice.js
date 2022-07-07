@@ -1,11 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { onStartQuery } from "../../config";
-
-export const StatusFilters = {
-  All: "all",
-  Active: "active",
-  Completed: "completed",
-};
+import { onStartQuery } from "../../app/config";
 
 const filtersSlice = createSlice({
   name: "filters",
@@ -45,11 +39,17 @@ const filtersSlice = createSlice({
           payload: { color, changeType },
         };
       },
+      filterPage: {},
+    },
+    filterPage(state, action) {
+      state.status = action.payload;
     },
   },
 });
 
 export const { filterPageSize, filterColors, filterStatus, filterSortBy } =
   filtersSlice.actions;
+
+export const selectFilters = (state) => state.filters;
 
 export default filtersSlice.reducer;

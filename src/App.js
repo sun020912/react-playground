@@ -1,74 +1,25 @@
 import React from "react";
-import { Routes, Route, NavLink, Outlet, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import Home from "./app/Home";
 import ColorList from "./features/colors/ColorList";
-import Footer from "./features/footer/Footer";
-import Header from "./features/header/Header";
-import EditTodoForm from "./features/todos/EditTodoForm";
+import TodoEdit from "./features/todos/TodoEdit";
 import TodoList from "./features/todos/TodoList";
-import ViewTodo from "./features/todos/ViewTodo";
+import TodoView from "./features/todos/TodoView";
 
 const App = () => {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <div className="App">
-            <nav>
-              <section>
-                <h1 style={{ textAlign: "center" }}>
-                  Redux Fundamentals Example
-                </h1>
-              </section>
-            </nav>
-            <main>
-              <section className="medium-container">
-                <div
-                  style={{
-                    fontSize: "2rem",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <NavLink
-                    to="/todos"
-                    style={({ isActive }) => ({
-                      margin: "0.5rem",
-                      textDecoration: "none",
-                      color: isActive ? "black" : "gray",
-                    })}
-                  >
-                    Todos
-                  </NavLink>
-                  <NavLink
-                    to="/colors"
-                    style={({ isActive }) => ({
-                      margin: "0.5rem",
-                      textDecoration: "none",
-                      color: isActive ? "black" : "gray",
-                    })}
-                  >
-                    Colors
-                  </NavLink>
-                </div>
-                <div className="todoapp">
-                  <Header />
-                  <Outlet />
-                  <Footer />
-                </div>
-              </section>
-            </main>
-          </div>
-        }
-      >
-        <Route path="" element={<Navigate to="todos" replace />} />
+      <Route path="/" element={<Home />}>
+        <Route path="" element={<Navigate to="todos" replace={true} />} />
         <Route path="todos">
-          <Route index element={<TodoList />}></Route>
-          <Route path="view/:id" element={<ViewTodo />} />
-          <Route path="edit/:id" element={<EditTodoForm />} />
+          <Route index element={<TodoList />} />
+          <Route path="view/:id" element={<TodoView />} />
+          <Route path="edit/:id" element={<TodoEdit />} />
         </Route>
-        <Route path="colors" element={<ColorList />} />
+        <Route path="colors">
+          <Route index element={<ColorList />} />
+        </Route>
       </Route>
     </Routes>
   );

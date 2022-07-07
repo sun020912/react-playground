@@ -1,19 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import qs from "qs";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const PaginationButton = ({ url, label, active, key }) => {
-  const filters = useSelector((state) => state.filters);
-  let clientUrl = "";
-  if (url) {
-    const hrefSearchParams = new URL(url).searchParams;
-    clientUrl = `/todos?${qs.stringify(filters, {
-      arrayFormat: "comma",
-    })}&page=${hrefSearchParams.get("page")}`;
-  }
   return (
-    <Link to={clientUrl}>
+    <Link to={url}>
       <button
         key={key}
         disabled={active}

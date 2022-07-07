@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
 import axios from "axios";
-import { apiServer } from "../../config";
+import { apiServer } from "../../app/config";
 import qs from "qs";
 
 const initialState = {
@@ -60,5 +64,12 @@ const colorsSlice = createSlice({
     });
   },
 });
+
+export const selectColors = (state) => state.colors;
+export const selectColorsData = (state) => state.colors.data;
+export const selectColorsNum = createSelector(
+  [selectColorsData],
+  (colors) => colors.length
+);
 
 export default colorsSlice.reducer;

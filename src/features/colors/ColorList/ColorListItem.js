@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { ReactComponent as TimesSolid } from "./times-solid.svg";
 import { useDispatch } from "react-redux";
-import { deleteColor, fetchColors, updateColor } from "./colorsSlice";
-import { filterColors } from "../filters/filtersSlice";
-import { fetchTodos } from "../todos/todosSlice";
+import { deleteColor, fetchColors, updateColor } from "../colorsSlice";
+import { filterColors } from "../../filters/filtersSlice";
+import { fetchTodos } from "../../todos/todosSlice";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 const ColorListItem = ({ id, name }) => {
@@ -66,55 +65,54 @@ const ColorListItem = ({ id, name }) => {
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
-    border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
+    p: 2,
+    borderRadius: 1,
   };
 
   return (
-    <>
-      <li>
-        <div className="view">
-          <div className="segment label">
-            <div
-              className="todo-text"
-              style={{
-                color: lowerCaseName,
-              }}
-            >
-              {name}
-            </div>
-          </div>
-          <div className="segment buttons">
-            <Button
-              startIcon={<EditIcon />}
-              variant="outlined"
-              onClick={() => setEditModal(true)}
-              sx={{ marginRight: "0.75rem" }}
-            >
-              Edit
-            </Button>
-            <button className="destroy" onClick={onDelete} disabled={disabled}>
-              <TimesSolid />
-            </button>
+    <li>
+      <div className="view">
+        <div className="segment label">
+          <div
+            className="todo-text"
+            style={{
+              color: lowerCaseName,
+            }}
+          >
+            {name}
           </div>
         </div>
-      </li>
+        <div className="segment buttons">
+          <IconButton
+            size="large"
+            aria-label={`edit color id ${id}`}
+            disabled={disabled}
+            color="primary"
+            onClick={() => setEditModal(true)}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            size="large"
+            aria-label={`delete color id ${id}`}
+            disabled={disabled}
+            color="warning"
+            onClick={onDelete}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </div>
+      </div>
       <div>
         <Modal open={editModal} onClose={() => setEditModal(false)}>
           <Box component="form" sx={style} onSubmit={handleSubmit}>
-            <Typography
-              variant="h6"
-              component="h2"
-              sx={{ marginBottom: "1rem" }}
-            >
-              Enter color name
-            </Typography>
             <TextField
+              placeholder="Enter color name"
               disabled={loading}
               value={colorName}
               onChange={(e) => setColorName(e.target.value)}
-              sx={{ marginBottom: "1.5rem" }}
+              sx={{ mb: 2 }}
               fullWidth
             />
             <Box
@@ -123,36 +121,29 @@ const ColorListItem = ({ id, name }) => {
                 justifyContent: "end",
               }}
             >
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Button
-                    disabled={loading}
-                    variant="outlined"
-                    startIcon={<CancelIcon />}
-                    onClick={() => setEditModal(false)}
-                    fullWidth
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
-                <Grid item xs={6}>
-                  <LoadingButton
-                    loading={loading}
-                    type="submit"
-                    variant="contained"
-                    loadingPosition="start"
-                    startIcon={<SaveIcon />}
-                    fullWidth
-                  >
-                    Save
-                  </LoadingButton>
-                </Grid>
-              </Grid>
+              <Button
+                disabled={loading}
+                variant="outlined"
+                startIcon={<CancelIcon />}
+                onClick={() => setEditModal(false)}
+                sx={{ mr: 1 }}
+              >
+                Cancel
+              </Button>
+              <LoadingButton
+                loading={loading}
+                type="submit"
+                variant="contained"
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </LoadingButton>
             </Box>
           </Box>
         </Modal>
       </div>
-    </>
+    </li>
   );
 };
 

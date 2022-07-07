@@ -5,11 +5,11 @@ import {
   deleteTodo,
   selectTodoById,
   fetchTodos,
-} from "./todosSlice";
+} from "../todosSlice";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as TimesSolid } from "./times-solid.svg";
-import { Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const TodoListItem = ({ id }) => {
   const todo = useSelector((state) => selectTodoById(state, id));
@@ -77,23 +77,29 @@ const TodoListItem = ({ id }) => {
           >
             <option></option>
             {colors.map(({ id, name }) => (
-              <option key={name.toLowerCase()} value={name.toLowerCase()}>
+              <option key={id} value={name.toLowerCase()}>
                 {name}
               </option>
             ))}
           </select>
-          <Button
+          <IconButton
+            size="large"
+            aria-label={`view todo id ${id}`}
             disabled={disabled}
-            startIcon={<VisibilityIcon />}
-            variant="outlined"
-            sx={{ marginRight: "0.75rem" }}
+            color="primary"
             onClick={() => navigate(`view/${id}`)}
           >
-            View
-          </Button>
-          <button className="destroy" onClick={onDelete} disabled={disabled}>
-            <TimesSolid />
-          </button>
+            <VisibilityIcon />
+          </IconButton>
+          <IconButton
+            size="large"
+            aria-label={`delete todo id ${id}`}
+            disabled={disabled}
+            color="warning"
+            onClick={onDelete}
+          >
+            <DeleteIcon />
+          </IconButton>
         </div>
       </div>
     </li>
