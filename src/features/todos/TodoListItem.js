@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ReactComponent as TimesSolid } from "./times-solid.svg";
 import {
   updateTodo as updateTodoThunk,
   deleteTodo,
   selectTodoById,
   fetchTodos,
 } from "./todosSlice";
-import EditIcon from "@mui/icons-material/Edit";
-import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as TimesSolid } from "./times-solid.svg";
+import { Button } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const TodoListItem = ({ id }) => {
@@ -84,13 +82,18 @@ const TodoListItem = ({ id }) => {
               </option>
             ))}
           </select>
+          <Button
+            disabled={disabled}
+            startIcon={<VisibilityIcon />}
+            variant="outlined"
+            sx={{ marginRight: "0.75rem" }}
+            onClick={() => navigate(`view/${id}`)}
+          >
+            View
+          </Button>
           <button className="destroy" onClick={onDelete} disabled={disabled}>
             <TimesSolid />
           </button>
-          <Button
-            startIcon={<VisibilityIcon />}
-            onClick={() => navigate(`view/${id}`)}
-          ></Button>
         </div>
       </div>
     </li>

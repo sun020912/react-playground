@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import SaveIcon from "@mui/icons-material/Save";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTodos, selectTodoById } from "./todosSlice";
+import { updateTodo } from "./todosSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import FormGroup from "@mui/material/FormGroup";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import Select from "@mui/material/Select";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTodos, selectTodoById } from "./todosSlice";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { updateTodo } from "./todosSlice";
+import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 const EditTodoForm = () => {
@@ -50,66 +48,81 @@ const EditTodoForm = () => {
   };
 
   const colorOptionList = colors.data.map(({ name, id }) => (
-    <option key={id} value={name.toLowerCase()}>
+    <MenuItem key={id} value={name.toLowerCase()}>
       {name}
-    </option>
+    </MenuItem>
   ));
 
   return (
-    <form style={{ padding: "1.5rem" }} onSubmit={handleSubmit}>
-      <div>
-        <div>
-          <label for="text">Todo text</label>
-        </div>
-        <input
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      style={{
+        margin: "1.5rem",
+      }}
+    >
+      <Box marginBottom="1.5rem">
+        <Typography component="h5" variant="h5" marginBottom="0.5rem">
+          Todo text
+        </Typography>
+        <TextField
+          disabled={loading}
           name="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          fullWidth
         />
-      </div>
-      <div>
-        <div>
-          <label for="color">Todo color</label>
-        </div>
-        <select
+      </Box>
+      <Box marginBottom="0.75rem">
+        <Typography component="h5" variant="h5" marginBottom="0.5rem">
+          Todo color
+        </Typography>
+        <Select
+          disabled={loading}
           name="color"
           value={color}
           onChange={(e) => setColor(e.target.value)}
+          fullWidth
         >
-          <option selected={todo.color}>Select color</option>
+          <MenuItem selected={todo.color}>Select color</MenuItem>
           {colorOptionList}
-        </select>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          name="completed"
-          checked={completed}
+        </Select>
+      </Box>
+      <Box marginBottom="0.75rem">
+        <FormControlLabel
+          control={
+            <Checkbox name="completed" checked={completed} disabled={loading} />
+          }
+          label="Completed"
           onChange={(e) => setCompleted(e.target.checked)}
         />
-        <label for="completed">Completed</label>
-      </div>
-      <div>
-        <Button
-          variant="outlined"
-          startIcon={<CancelIcon />}
-          onClick={() => navigate(-1)}
-          sx={{
-            marginRight: "0.5rem",
-          }}
-        >
-          Cancel
-        </Button>
-        <LoadingButton
-          loading={loading}
-          type="submit"
-          variant="contained"
-          startIcon={<SaveIcon />}
-        >
-          Save
-        </LoadingButton>
-      </div>
-    </form>
+      </Box>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <Button
+            disabled={loading}
+            variant="outlined"
+            startIcon={<CancelIcon />}
+            onClick={() => navigate(-1)}
+            fullWidth
+          >
+            Cancel
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <LoadingButton
+            loading={loading}
+            variant="contained"
+            startIcon={<SaveIcon />}
+            type="submit"
+            loadingPosition="start"
+            fullWidth
+          >
+            Save
+          </LoadingButton>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

@@ -4,16 +4,16 @@ import { useDispatch } from "react-redux";
 import { deleteColor, fetchColors, updateColor } from "./colorsSlice";
 import { filterColors } from "../filters/filtersSlice";
 import { fetchTodos } from "../todos/todosSlice";
-import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import Input from "@mui/material/Input";
-import CancelIcon from "@mui/icons-material/Cancel";
-import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
 import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import CancelIcon from "@mui/icons-material/Cancel";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const ColorListItem = ({ id, name }) => {
   const dispatch = useDispatch();
@@ -28,8 +28,8 @@ const ColorListItem = ({ id, name }) => {
     dispatch(filterColors(lowerCaseName, "removed"));
     try {
       await dispatch(deleteColor(id)).unwrap();
-      await dispatch(fetchColors()).unwrap();
-      await dispatch(fetchTodos()).unwrap();
+      dispatch(fetchColors()).unwrap();
+      dispatch(fetchTodos()).unwrap();
     } catch (error) {
       // TODO: app behaviour after failure
       dispatch(filterColors(lowerCaseName, "added"));
@@ -86,50 +86,68 @@ const ColorListItem = ({ id, name }) => {
             </div>
           </div>
           <div className="segment buttons">
+            <Button
+              startIcon={<EditIcon />}
+              variant="outlined"
+              onClick={() => setEditModal(true)}
+              sx={{ marginRight: "0.75rem" }}
+            >
+              Edit
+            </Button>
             <button className="destroy" onClick={onDelete} disabled={disabled}>
               <TimesSolid />
             </button>
-            <Button
-              startIcon={<EditIcon />}
-              onClick={() => setEditModal(true)}
-            ></Button>
           </div>
         </div>
       </li>
       <div>
-        <Modal
-          open={editModal}
-          onClose={() => setEditModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+        <Modal open={editModal} onClose={() => setEditModal(false)}>
           <Box component="form" sx={style} onSubmit={handleSubmit}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Typography
+              variant="h6"
+              component="h2"
+              sx={{ marginBottom: "1rem" }}
+            >
               Enter color name
             </Typography>
             <TextField
+              disabled={loading}
               value={colorName}
               onChange={(e) => setColorName(e.target.value)}
+              sx={{ marginBottom: "1.5rem" }}
+              fullWidth
             />
-            <Box>
-              <Button
-                variant="outlined"
-                startIcon={<CancelIcon />}
-                onClick={() => setEditModal(false)}
-                sx={{
-                  marginRight: "0.5rem",
-                }}
-              >
-                Cancel
-              </Button>
-              <LoadingButton
-                loading={loading}
-                type="submit"
-                variant="contained"
-                startIcon={<SaveIcon />}
-              >
-                Save
-              </LoadingButton>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+              }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Button
+                    disabled={loading}
+                    variant="outlined"
+                    startIcon={<CancelIcon />}
+                    onClick={() => setEditModal(false)}
+                    fullWidth
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <LoadingButton
+                    loading={loading}
+                    type="submit"
+                    variant="contained"
+                    loadingPosition="start"
+                    startIcon={<SaveIcon />}
+                    fullWidth
+                  >
+                    Save
+                  </LoadingButton>
+                </Grid>
+              </Grid>
             </Box>
           </Box>
         </Modal>
