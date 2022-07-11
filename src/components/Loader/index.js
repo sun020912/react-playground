@@ -1,11 +1,7 @@
 import React from "react";
 
 const Loader = () => {
-  return (
-    <div className="todo-list">
-      <div className="loader" />
-    </div>
-  );
+  return <div className="loader" />;
 };
 
 export default Loader;

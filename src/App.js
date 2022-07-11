@@ -1,25 +1,21 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-
-import Home from "./app/Home";
-import ColorList from "./features/colors/ColorList";
-import TodoEdit from "./features/todos/TodoEdit";
-import TodoList from "./features/todos/TodoList";
-import TodoView from "./features/todos/TodoView";
+import HomeLayout from "./layouts/Home";
+import AccountLayout from "layouts/Account";
+import Account from "routes/account/Account";
+import Index from "routes/Index";
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />}>
-        <Route path="" element={<Navigate to="todos" replace={true} />} />
-        <Route path="todos">
-          <Route index element={<TodoList />} />
-          <Route path="view/:id" element={<TodoView />} />
-          <Route path="edit/:id" element={<TodoEdit />} />
-        </Route>
-        <Route path="colors">
-          <Route index element={<ColorList />} />
-        </Route>
+      <Route path="">
+        <Route index element={<Navigate to="todos" replace={true} />} />
+      </Route>
+      <Route path="" element={<HomeLayout />}>
+        <Route path="*" element={<Index />} />
+      </Route>
+      <Route path="account" element={<AccountLayout />}>
+        <Route path="*" element={<Account />} />
       </Route>
     </Routes>
   );
