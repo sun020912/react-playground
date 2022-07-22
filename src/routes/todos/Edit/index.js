@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTodos, selectTodoById } from "store/todosSlice";
-import { updateTodo } from "store/todosSlice";
+import { getTodos, selectTodoById } from "redux/todosSlice";
+import { updateTodo } from "redux/todosSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { selectAllColors } from "store/colorsSlice";
+import { selectAllColors } from "redux/colorsSlice";
 
 const Edit = () => {
   const { id } = useParams();

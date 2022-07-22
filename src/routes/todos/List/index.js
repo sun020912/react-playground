@@ -9,13 +9,13 @@ import {
   selectTodosMetaTo,
   selectTodoIds,
   selectTodosStatus,
-} from "store/todosSlice";
+} from "redux/todosSlice";
 import Loader from "components/Loader";
 import Pagination from "components/Pagination";
 import TopInput from "components/TopInput";
 import TodoListItem from "./Item";
 import TodoListFooter from "./Footer";
-import { filtPage, selectFilters } from "store/filtersSlice";
+import { filtPage, selectFilters } from "redux/filtersSlice";
 
 const List = () => {
   const todoIds = useSelector((state) => selectTodoIds(state));

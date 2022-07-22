@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectCompletedTodoNumber } from "store/todosSlice";
+import { selectCompletedTodoNumber } from "redux/todosSlice";
 
 const RemainingTodos = () => {
   const count = useSelector((state) => selectCompletedTodoNumber(state));

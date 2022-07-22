@@ -6,7 +6,7 @@ import {
   deleteCompleted,
   addRandomTodos as addRandomTodosThunk,
   updateRandomTodos as updateRandomTodosThunk,
-} from "store/todosSlice";
+} from "redux/todosSlice";
 
 const ActionButtons = () => {
   const [disabled, setDisabled] = useState(false);

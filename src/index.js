@@ -10,10 +10,10 @@ import {
   filtPageSize,
   filtSortBy,
   filtStatus,
-} from "store/filtersSlice";
+} from "redux/filtersSlice";
 import { Provider } from "react-redux";
-import { getColors } from "store/colorsSlice";
-import { getTodos } from "store/todosSlice";
+import { findAll as findAllColors } from "redux/colorsSlice";
+import { getTodos } from "redux/todosSlice";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -21,7 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const start = async () => {
   root.render(<h3 style={{ textAlign: "center" }}>Initializing...</h3>);
   try {
-    await store.dispatch(getColors()).unwrap();
+    await store.dispatch(findAllColors()).unwrap();
 
     const hrefSearchParams = new URL(document.location).searchParams;
     await store.dispatch(getTodos(hrefSearchParams.toString()));

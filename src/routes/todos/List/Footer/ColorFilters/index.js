@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectAllColors } from "store/colorsSlice";
-import { selectFiltersColors } from "store/filtersSlice";
+import { selectAllColors } from "redux/colorsSlice";
+import { selectFiltersColors } from "redux/filtersSlice";
 import ColorFiltersItem from "./Item";
 
 const ColorFilters = () => {
