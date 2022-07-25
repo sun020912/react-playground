@@ -1,5 +1,5 @@
 import React from "react";
-import extractParamFromUrl from "utils/extractParamFromUrl";
+import extractParamFromUrl from "helpers/extractParamFromUrl";
 import PaginationItem from "./PaginationItem";
 
 const Pagination = ({ links }) => {

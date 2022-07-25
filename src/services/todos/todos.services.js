@@ -1,8 +1,8 @@
 import * as todosApis from "apis/todosApis";
 import qs from "qs";
-import loremTodo from "utils/loremTodo";
-import randomBoolean from "utils/randomBoolean";
-import randomColor from "utils/randomColor";
+import loremTodo from "helpers/loremTodo";
+import randomBoolean from "helpers/randomBoolean";
+import randomColor from "helpers/randomColor";
 
 export const getList = async (todosFilters) => {
   const queryString = qs.stringify(todosFilters, {

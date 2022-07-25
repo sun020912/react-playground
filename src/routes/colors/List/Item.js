@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteColor, getColors, updateColor } from "redux/colorsSlice";
-import { filtColors } from "redux/filtersSlice";
-import { getTodos } from "redux/todosSlice";
+import { deleteColor, getColors, updateColor } from "store/colorsSlice";
+import { filtColors } from "store/filtersSlice";
+import { getTodos } from "store/todos/todos.slice";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";

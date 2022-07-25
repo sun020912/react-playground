@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTodos } from "redux/todosSlice";
-import { filtPage, filtStatus, selectFiltersStatus } from "redux/filtersSlice";
+import { getTodos } from "store/todos/todos.slice";
+import { filtPage, filtStatus, selectFiltersStatus } from "store/filtersSlice";
 import statuses from "constants/statuses";
 
 const StatusFilter = () => {

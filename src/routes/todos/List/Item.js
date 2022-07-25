@@ -5,12 +5,12 @@ import {
   deleteTodo,
   selectTodoById,
   getTodos,
-} from "redux/todosSlice";
+} from "store/todos/todos.slice";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { selectAllColors } from "redux/colorsSlice";
+import { selectAllColors } from "store/colorsSlice";
 
 const TodoListItem = ({ id }) => {
   const todo = useSelector((state) => selectTodoById(state, id));

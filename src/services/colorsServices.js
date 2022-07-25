@@ -1,5 +1,5 @@
 import * as colorsApis from "apis/colorsApis";
-import randomColor from "utils/randomColor";
+import randomColor from "helpers/randomColor";
 
 export const findAll = async () => {
   return await colorsApis.findAll();

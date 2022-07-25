@@ -10,10 +10,10 @@ import {
   filtPageSize,
   filtSortBy,
   filtStatus,
-} from "redux/filtersSlice";
+} from "store/filtersSlice";
 import { Provider } from "react-redux";
-import { findAll as findAllColors } from "redux/colorsSlice";
-import { getTodos } from "redux/todosSlice";
+import { findAll as findAllColors } from "store/colorsSlice";
+import { getTodos } from "store/todos/todos.slice";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

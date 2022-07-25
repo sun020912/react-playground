@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectTodoById } from "redux/todosSlice";
+import { selectTodoById } from "store/todos/todos.slice";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";

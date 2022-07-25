@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filtColors, filtPage } from "redux/filtersSlice";
-import { getTodos } from "redux/todosSlice";
+import { filtColors, filtPage } from "store/filtersSlice";
+import { getTodos } from "store/todos/todos.slice";
 
 const ColorFiltersItem = ({ name, defaultChecked }) => {
   const [disabled, setDisabled] = useState(false);

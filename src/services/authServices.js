@@ -1,5 +1,5 @@
 import qs from "qs";
-import { history } from "utils/history";
+import { history } from "helpers/history";
 
 export const logout = () => {
   localStorage.removeItem("user");

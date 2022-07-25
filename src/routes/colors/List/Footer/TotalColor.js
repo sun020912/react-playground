@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectColorIdsLength } from "redux/colorsSlice";
+import { selectColorIdsLength } from "store/colorsSlice";
 
 const TotalColor = () => {
   const colorsNum = useSelector((state) => selectColorIdsLength(state));

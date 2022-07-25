@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useParams, useSearchParams } from "react-router-dom";
-import { getTodos } from "redux/todosSlice";
+import { getTodos } from "store/todos/todos.slice";
 
 const PaginationItem = ({ to, label, active }) => {
   const dispatch = useDispatch();

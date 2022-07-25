@@ -9,7 +9,7 @@ import {
   getColors,
   selectAllColors,
   selectColorsStatus,
-} from "redux/colorsSlice";
+} from "store/colorsSlice";
 
 const ColorList = () => {
   const colors = useSelector((state) => selectAllColors(state));
